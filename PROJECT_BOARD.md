@@ -1,27 +1,27 @@
 # CareerPulse — tableau de bord des tâches
 
 Dépôt : [Malekkhr/projetwebcarreerpulse](https://github.com/Malekkhr/projetwebcarreerpulse)  
-Référence : version V4 du projet, testée localement avec XAMPP/MySQL.
+Référence : version V4 locale sous XAMPP/MySQL.
 
-## Terminé
-
-| Tâche | État |
-|---|---|
-| Mettre en place l'architecture MVC et le routage PHP | ✅ Terminé |
-| Préparer les pages Front Office et intégrer le template selon le workshop | ✅ Terminé |
-| Préparer les pages Back Office et intégrer le template selon le workshop | ✅ Terminé |
-| Connecter l'application à MySQL via PDO et fournir le schéma SQL | ✅ Terminé |
-| Enregistrer les comptes, profils et candidatures en base | ✅ Terminé |
-| Lire et mettre à jour les offres, formations, utilisateurs, signalements et notifications | ✅ Terminé |
-| Rédiger le README et le guide de démarrage XAMPP/SQL | ✅ Terminé |
-| Préparer le diagramme de cas d'utilisation et sa source PlantUML | ✅ Préparé |
-| Préparer le diagramme de classes | ✅ Préparé |
-
-## À valider avec l'équipe et les tuteurs
+## Terminé dans la V4
 
 | Tâche | État |
 |---|---|
-| Valider le diagramme de cas d'utilisation | 🟡 En attente de retour; l'équipe n'a pas encore reçu de remarques |
+| Architecture MVC et routage PHP | ✅ Terminé |
+| Pages Front Office et template intégré selon le workshop | ✅ Terminé |
+| Pages Back Office et template intégré selon le workshop | ✅ Terminé |
+| Connexion PDO/MySQL et schéma SQL | ✅ Terminé |
+| Comptes, profils et candidatures enregistrés en base | ✅ Terminé |
+| Offres, formations, utilisateurs, signalements et notifications reliés à la base | ✅ Terminé |
+| README et guide de démarrage XAMPP/SQL | ✅ Terminé |
+| Diagramme de cas d’utilisation préparé | ✅ Préparé |
+| Diagramme de classes préparé | ✅ Préparé |
+
+## À valider avec l’équipe et les tuteurs
+
+| Tâche | État |
+|---|---|
+| Valider le diagramme de cas d’utilisation | 🟡 En attente de retour; aucun commentaire des tuteurs n’a été reçu |
 | Valider les attributs et cardinalités du diagramme de classes | 🟡 À confirmer par le groupe et les tuteurs |
 
 ## À planifier pour compléter le concept
@@ -31,13 +31,15 @@ Référence : version V4 du projet, testée localement avec XAMPP/MySQL.
 | Import réel de CV | 🔵 À planifier |
 | Questionnaire et moteur de recommandations dynamique | 🔵 À planifier |
 | Notifications push réellement envoyées | 🔵 À planifier |
-| Protection des routes d'administration par authentification et rôles | 🔵 À planifier |
+| Protection des routes d’administration par authentification et rôles | 🔵 À planifier |
 
 ## Coordination GitHub
 
+Le dépôt distant a été créé en public, mais il est encore vide. Le tableau et le code V4 sont prêts localement; l’intégration GitHub a refusé les écritures avec une erreur 403, donc rien n’a été synchronisé.
+
 | Tâche | État |
 |---|---|
-| Synchroniser la V4 locale avec ce dépôt | ⏳ En cours |
+| Synchroniser la V4 locale avec ce dépôt | ⏳ En attente d’accès en écriture |
 | Inviter les tuteurs concernés | ⏳ En attente de leurs identifiants GitHub |
 
-> Les lignes « préparé » indiquent que les livrables existent; elles ne remplacent pas leur validation par l'équipe ou les tuteurs.
+> « Préparé » signifie que le livrable existe; cela ne remplace pas sa validation par l’équipe ou les tuteurs.
