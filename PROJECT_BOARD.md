@@ -35,11 +35,11 @@ Référence : version V4 locale sous XAMPP/MySQL.
 
 ## Coordination GitHub
 
-Le dépôt distant a été créé en public, mais il est encore vide. Le tableau et le code V4 sont prêts localement; l’intégration GitHub a refusé les écritures avec une erreur 403, donc rien n’a été synchronisé.
+Le code V4, les diagrammes, les guides et ce tableau de tâches Markdown sont publiés sur la branche `main` du dépôt public [Malekkhr/projetwebcarreerpulse](https://github.com/Malekkhr/projetwebcarreerpulse). Ce fichier est un suivi dans le dépôt; il ne crée pas un tableau interactif dans l’onglet GitHub Projects.
 
 | Tâche | État |
 |---|---|
-| Synchroniser la V4 locale avec ce dépôt | ⏳ En attente d’accès en écriture |
+| Synchroniser la V4 locale avec ce dépôt | ✅ Publiée sur `main` |
 | Inviter les tuteurs concernés | ⏳ En attente de leurs identifiants GitHub |
 
 > « Préparé » signifie que le livrable existe; cela ne remplace pas sa validation par l’équipe ou les tuteurs.

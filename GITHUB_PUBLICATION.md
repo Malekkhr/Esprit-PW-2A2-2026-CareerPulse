@@ -7,6 +7,8 @@
 
 ## État de synchronisation
 
-Le dépôt distant est créé mais encore vide. La version V4 locale est prête sur la branche `main`; le dépôt distant `origin` est configuré. Les tentatives d’écriture GitHub et de push depuis cette session ont été refusées (403 / authentification non disponible). Il faut accorder l’accès en écriture à cette connexion avant de synchroniser le code et le tableau.
+Le dépôt public a reçu la version V4 locale sur la branche `main`. Le code, la base de données, les guides, les diagrammes et le tableau de tâches Markdown sont publiés dans ce dépôt.
+
+`PROJECT_BOARD.md` est un tableau de tâches au format Markdown dans le dépôt; ce fichier ne crée pas un tableau interactif dans l’onglet GitHub Projects.
 
 Les invitations des tuteurs restent à faire lorsque leurs identifiants GitHub seront disponibles.
