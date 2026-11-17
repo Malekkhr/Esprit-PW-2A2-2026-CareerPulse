@@ -83,6 +83,10 @@ Front Office and Back Office layouts assemble shared partials with `require`. Co
 
 See [docs/GITHUB_BOARD_DRAFT.md](docs/GITHUB_BOARD_DRAFT.md) for the task list and proposed progress states to add to the team GitHub Project.
 
+## Project Board
+
+See [PROJECT_BOARD.md](PROJECT_BOARD.md) for completed tasks, pending validation, and planned work.
+
 ## UML Diagrams
 
 - [Use case diagram preview](docs/diagrams/CAS_UTILISATION.md) (Mermaid) and [PlantUML source](docs/diagrams/CAS_UTILISATION.puml)
