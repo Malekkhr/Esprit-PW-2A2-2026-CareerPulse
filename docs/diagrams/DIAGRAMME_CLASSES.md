@@ -1,141 +1,109 @@
-# Diagramme de classes — CareerPulse
+# Diagramme de classes — CareerPulse V4
 
-**Version de travail préparatoire.** Le modèle ci-dessous reprend les modules présentés pour CareerPulse. Les attributs, opérations et cardinalités qui ne sont pas explicitement décrits dans le support sont des propositions à valider par le groupe et les tuteurs avant la conception de la base de données.
+Ce diagramme représente les classes de données réellement persistées dans la V4, d’après `database/careerpulse.sql` et les modèles PHP. Les deux associations indiquées sont les seules relations avec clés étrangères dans ce schéma.
 
 ```mermaid
 classDiagram
   direction LR
 
   class Utilisateur {
-    +int id
-    +string nom
-    +string prenom
-    +string email
-    +string motDePasseHash
-    +RoleUtilisateur role
-    +bool actif
-    +sAuthentifier()
-    +modifierProfil()
-  }
-  class Administrateur {
-    +validerOffre()
-    +modererUtilisateur()
-    +traiterSignalement()
-    +consulterStatistiques()
-  }
-  class Profil {
-    +int id
-    +string biographie
-    +string localisation
-    +string competences
-    +mettreAJour()
-  }
-  class CV {
-    +int id
-    +string nomFichier
-    +string cheminStockage
-    +datetime dateImport
-  }
-  class Service {
-    +int id
-    +string titre
-    +string description
-    +TypeService type
-    +datetime datePublication
-    +datetime dateLimite
-    +bool actif
-  }
-  class Categorie {
-    +int id
-    +string nom
-    +string description
-  }
-  class Preference {
-    +int id
-    +string domaines
-    +string localisationSouhaitee
-    +string typeOpportunite
-    +enregistrer()
-  }
-  class Recommandation {
-    +int id
-    +float scoreCorrespondance
-    +datetime dateCalcul
-    +string justification
-  }
-  class Candidature {
-    +int id
-    +datetime dateSoumission
-    +string lettreMotivation
-    +suivreStatut()
-    +retirer()
-  }
-  class StatutOffre {
-    +int id
-    +string libelle
-    +datetime dateMiseAJour
-  }
-  class Notification {
-    +int id
-    +string titre
-    +string message
-    +datetime dateCreation
-    +datetime dateLecture
-    +marquerCommeLue()
-  }
-  class AlertePush {
-    +int id
-    +string jetonAppareil
-    +string plateforme
-    +bool active
-    +datetime dateEnregistrement
-  }
-  class Signalement {
-    +int id
-    +string motif
-    +string description
-    +datetime dateCreation
-    +string etat
-  }
-  class AdminLog {
-    +int id
-    +string action
-    +string details
-    +datetime dateAction
-  }
-  class RoleUtilisateur {
-    <<enumeration>>
-    ETUDIANT
-    ADMINISTRATEUR
-  }
-  class TypeService {
-    <<enumeration>>
-    STAGE
-    EMPLOI
-    FORMATION
+    +int id PK
+    +varchar(120) name
+    +varchar(190) email UNIQUE
+    +varchar(255) password_hash
+    +varchar(160) study
+    +text skills
+    +text goal
+    +string status
+    +datetime created_at
+    +create(name,email,password,study)
+    +findByEmail(email)
+    +updateProfile(id,profile)
+    +sessionProfile()
+    +all()
+    +toggleStatus(id)
   }
 
-  Administrateur --|> Utilisateur
-  Utilisateur "1" *-- "1" Profil : possède
-  Profil "1" *-- "0..1" CV : contient
-  Categorie "1" <-- "0..*" Service : classe
-  Utilisateur "1" --> "0..*" Preference : définit
-  Preference "1" --> "0..*" Recommandation : produit
-  Recommandation "0..*" --> "1" Service : suggère
+  class Offre {
+    +varchar(20) id PK
+    +varchar(200) title
+    +varchar(160) company
+    +varchar(20) type
+    +varchar(100) category
+    +varchar(100) location
+    +varchar(255) skills
+    +tinyint unsigned match_score
+    +varchar(20) status
+    +datetime created_at
+    +all()
+    +visibleToStudents(type)
+    +findApplicable(id)
+    +exists(id)
+    +setStatus(id,status)
+  }
+
+  class Candidature {
+    +int id PK
+    +int user_id FK
+    +varchar(20) offer_id FK
+    +varchar(30) status
+    +date applied_at
+    +create(userId,offerId)
+    +forUser(userId)
+    +all()
+    +countPending()
+    +setStatus(id,status)
+  }
+
+  class Formation {
+    +int id PK
+    +varchar(200) title
+    +varchar(100) category
+    +varchar(60) duration
+    +varchar(60) level
+    +varchar(120) image
+    +varchar(255) skills
+    +all()
+  }
+
+  class Signalement {
+    +varchar(20) id PK
+    +varchar(200) subject
+    +varchar(255) reason
+    +varchar(20) status
+    +datetime created_at
+    +all()
+    +countOpen()
+    +resolve(id)
+  }
+
+  class Notification {
+    +int id PK
+    +varchar(200) title
+    +varchar(500) body
+    +bool is_read
+    +datetime created_at
+    +all()
+    +markAllRead()
+  }
+
   Utilisateur "1" --> "0..*" Candidature : dépose
-  Candidature "0..*" --> "1" Service : concerne
-  Candidature "0..*" --> "1" StatutOffre : possède le statut
-  Utilisateur "1" --> "0..*" Notification : reçoit
-  Utilisateur "1" --> "0..*" AlertePush : enregistre
-  Notification "0..*" --> "0..*" AlertePush : est envoyée sur
-  Administrateur "1" --> "0..*" AdminLog : produit
-  Signalement "1" --> "0..*" AdminLog : traitement journalisé
+  Offre "1" --> "0..*" Candidature : concerne
+
+  note for Candidature "Contrainte SQL UNIQUE(user_id, offer_id) : une candidature par utilisateur et par offre."
 ```
 
-## Hypothèses à confirmer
+## Lecture du modèle
 
-- `Service` désigne une opportunité du catalogue (stage, emploi ou formation), selon les modules présentés.
-- `StatutOffre` est le nom présent dans les éléments préparatoires; l'équipe peut retenir `StatutCandidature` si les statuts décrivent plutôt l'avancement d'une candidature.
-- Le CV, les préférences, les notifications push et les journaux d'administration sont modélisés comme classes distinctes pour couvrir les fonctions annoncées. Leurs champs et cardinalités sont des propositions de conception.
-- L'association entre `Signalement` et `AdminLog` représente une traçabilité possible du traitement; les tuteurs peuvent demander une autre structure.
-- Les types, attributs et opérations sont à ajuster après validation métier et choix de la base de données.
+- Un utilisateur peut déposer plusieurs candidatures; chaque candidature appartient à un seul utilisateur.
+- Une offre peut recevoir plusieurs candidatures; chaque candidature concerne une seule offre.
+- `skills`, `study` et `goal` sont des champs de `Utilisateur` : la V4 n’a pas de table `Profil` distincte.
+- `Formation`, `Signalement` et `Notification` n’ont pas de clé étrangère dans le schéma V4. Les notifications sont globales dans cette version.
+- `match_score` est stocké dans `Offre`; le modèle V4 ne contient pas de classe `Recommandation` ni de calcul dynamique de matching.
+- `users.status` est un ENUM SQL (`active`, `suspended`); les autres statuts sont stockés sous forme de chaînes.
+
+## Portée cible du projet
+
+Le modèle cible présenté par CareerPulse peut être étendu avec `CV`, `Préférence`, `Recommandation`, `AlertePush` et `AdminLog`. Ces classes ne sont pas persistées dans la V4 actuelle. Une proposition conceptuelle distincte est conservée dans [DIAGRAMME_CLASSES_CIBLE.md](DIAGRAMME_CLASSES_CIBLE.md); les hypothèses et cardinalités doivent être validées par le groupe et les tuteurs.
+
+La source PlantUML de ce modèle V4 est [DIAGRAMME_CLASSES.puml](DIAGRAMME_CLASSES.puml), et un rendu SVG est disponible dans [DIAGRAMME_CLASSES.svg](DIAGRAMME_CLASSES.svg).

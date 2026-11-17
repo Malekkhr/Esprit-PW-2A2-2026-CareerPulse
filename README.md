@@ -90,7 +90,8 @@ See [PROJECT_BOARD.md](PROJECT_BOARD.md) for completed tasks, pending validation
 ## UML Diagrams
 
 - [Use case diagram preview](docs/diagrams/CAS_UTILISATION.md) (Mermaid) and [PlantUML source](docs/diagrams/CAS_UTILISATION.puml)
-- [Class diagram](docs/diagrams/DIAGRAMME_CLASSES.md) (Mermaid preview with proposed modeling assumptions)
+- [Class diagram V4](docs/diagrams/DIAGRAMME_CLASSES.md) (Mermaid source, [SVG preview](docs/diagrams/DIAGRAMME_CLASSES.svg), and [PlantUML source](docs/diagrams/DIAGRAMME_CLASSES.puml)); it reflects the current SQL schema.
+- [Target conceptual class model](docs/diagrams/DIAGRAMME_CLASSES_CIBLE.md) (proposed extensions to validate with the team and tutors)
 - [Diagram notes and pending items](docs/diagrams/README.md)
 
 ## Contributors
