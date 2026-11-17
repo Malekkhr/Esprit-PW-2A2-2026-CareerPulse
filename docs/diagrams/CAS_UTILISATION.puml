@@ -1,0 +1,67 @@
+@startuml
+'CareerPulse — vision fonctionnelle du système cible'
+title CareerPulse — diagramme de cas d'utilisation
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam actorStyle stickman
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #418263
+  ArrowColor #718078
+  FontColor #20332B
+}
+skinparam rectangle {
+  BorderColor #244D3B
+  FontColor #153D2D
+}
+
+actor "Étudiant" as Student
+actor "Administrateur" as Admin
+
+rectangle "Système CareerPulse" as System {
+  usecase "S'authentifier" as Authenticate
+
+  package "Espace étudiant" #F7FBF8 {
+    usecase "Gérer son profil" as Profile
+    usecase "Importer / actualiser son CV" as CV
+    usecase "Parcourir offres et formations" as Catalogue
+    usecase "Passer le questionnaire" as Questionnaire
+    usecase "Consulter les recommandations" as Recommendations
+    usecase "Postuler en un clic" as Apply
+    usecase "Suivre ses candidatures" as Track
+    usecase "Recevoir une notification push" as Push
+  }
+
+  package "Administration" #FFFBF2 {
+    usecase "Gérer les offres" as Offers #FFF4D9
+    usecase "Gérer les candidatures" as AdminApplications #FFF4D9
+    usecase "Modérer les utilisateurs" as Users #FFF4D9
+    usecase "Traiter les signalements" as Reports #FFF4D9
+    usecase "Consulter les statistiques" as Statistics #FFF4D9
+    usecase "Gérer les notifications" as Notifications #FFF4D9
+  }
+}
+
+Student -- Authenticate
+Admin -- Authenticate
+Student -- Profile
+Student -- CV
+Student -- Catalogue
+Student -- Questionnaire
+Student -- Recommendations
+Student -- Apply
+Student -- Track
+Student -- Push
+Admin -- Offers
+Admin -- AdminApplications
+Admin -- Users
+Admin -- Reports
+Admin -- Statistics
+Admin -- Notifications
+
+note bottom of System
+Vision du périmètre fonctionnel cible.
+La V4 met en œuvre une partie des fonctions seulement.
+end note
+@enduml

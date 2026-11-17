@@ -1,0 +1,20 @@
+:root {
+    --color-brand-50: #edf3ee;
+    --color-brand-100: #d8e5da;
+    --color-brand-400: #5a8061;
+    --color-brand-500: #1f3d2b;
+    --color-brand-600: #1f3d2b;
+    --color-brand-700: #0f2a1d;
+    --color-brand-800: #0f2a1d;
+    --color-brand-900: #091a11;
+}
+
+body { font-family: Arial, Helvetica, sans-serif; }
+.admin-brand-mark { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 11px 11px 11px 3px; background: #0f2a1d; color: #d9a531; font-size: 20px; font-weight: 800; }
+.admin-brand-text { color: #0f2a1d; font-size: 19px; font-weight: 800; letter-spacing: -.04em; }
+.admin-brand-text span { color: #d9a531; }
+.admin-nav-code { display: inline-grid; width: 30px; height: 28px; place-items: center; border-radius: 8px; background: rgba(217,165,49,.16); color: #755816; font-size: 10px; font-weight: 800; }
+.admin-quick-link { display: flex; align-items: center; gap: 11px; color: #34463a; font-size: 13px; font-weight: 700; }
+.admin-quick-link span { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 9px; background: #edf3ee; color: #1f3d2b; font-size: 10px; }
+.dark .admin-brand-text { color: #fff; }
+.dark .admin-quick-link { color: #d1d5db; }

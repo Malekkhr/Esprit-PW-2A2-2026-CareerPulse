@@ -1,0 +1,20 @@
+<div class="mb-6 flex flex-wrap items-end justify-between gap-3">
+    <div><p class="mb-2 text-xs font-bold uppercase tracking-[.16em] text-brand-600 dark:text-brand-400">PILOTAGE</p><h1 class="text-title-md font-bold text-gray-800 dark:text-white/90">Vue d’ensemble</h1><p class="mt-2 text-theme-sm text-gray-500 dark:text-gray-400">Activité de démonstration — valeurs fictives.</p></div>
+    <a href="<?= e(route('admin/offers')) ?>" class="inline-flex items-center rounded-xl bg-brand-600 px-4 py-3 text-theme-sm font-semibold text-white hover:bg-brand-700">Examiner les offres <span class="ml-2">→</span></a>
+</div>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+    <?php $metrics = [['Offres au catalogue', $offerCount, 'Catalogue'], ['Candidatures à examiner', $pendingApplications, 'Candidatures'], ['Offres à examiner', $pending, 'Modération'], ['Profils démo', $users, 'Étudiants'], ['Signalements ouverts', $reports, 'Suivi']]; foreach ($metrics as [$label, $value, $tag]): ?>
+        <article class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]"><div class="flex items-start justify-between"><div><p class="text-theme-sm text-gray-500 dark:text-gray-400"><?= e($label) ?></p><p class="mt-3 text-title-md font-bold text-gray-800 dark:text-white/90"><?= e($value) ?></p></div><span class="rounded-lg bg-brand-50 px-2.5 py-1.5 text-xs font-bold text-brand-700 dark:bg-brand-500/15 dark:text-brand-400"><?= e($tag) ?></span></div><p class="mt-4 text-xs text-gray-400">Données locales de démonstration</p></article>
+    <?php endforeach; ?>
+</div>
+
+<div class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-3">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 xl:col-span-2 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="mb-5 flex items-center justify-between"><div><h2 class="text-theme-xl font-bold text-gray-800 dark:text-white/90">File de modération</h2><p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Offres à examiner par l’administration.</p></div><a class="text-theme-sm font-semibold text-brand-600 dark:text-brand-400" href="<?= e(route('admin/offers')) ?>">Tout voir →</a></div>
+        <div class="overflow-x-auto"><table class="w-full min-w-[560px] text-left text-theme-sm"><thead><tr class="border-y border-gray-100 text-xs uppercase tracking-wider text-gray-400 dark:border-gray-800"><th class="py-3 pr-4">Offre</th><th class="py-3 pr-4">Organisation</th><th class="py-3 pr-4">Type</th><th class="py-3">Statut</th></tr></thead><tbody>
+        <?php foreach ($offers as $offer): ?><tr class="border-b border-gray-100 last:border-0 dark:border-gray-800"><td class="py-4 pr-4 font-semibold text-gray-800 dark:text-white/90"><?= e($offer['title']) ?><small class="mt-1 block font-normal text-gray-400"><?= e($offer['id']) ?></small></td><td class="py-4 pr-4 text-gray-600 dark:text-gray-300"><?= e($offer['company']) ?></td><td class="py-4 pr-4 text-gray-600 dark:text-gray-300"><?= e($offer['type']) ?></td><td class="py-4"><span class="rounded-full bg-warning-50 px-2.5 py-1 text-xs font-semibold text-warning-700"><?= e($offer['status']) ?></span></td></tr><?php endforeach; ?>
+        </tbody></table></div>
+    </section>
+    <aside class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]"><h2 class="text-theme-xl font-bold text-gray-800 dark:text-white/90">Parcours administrateur</h2><p class="mt-2 text-theme-sm leading-6 text-gray-500 dark:text-gray-400">Le back-office regroupe la validation des offres, la modération, les signalements et les statistiques décrits dans la conception.</p><div class="mt-5 space-y-3"><a class="admin-quick-link" href="<?= e(route('admin/offers')) ?>"><span>01</span> Revoir les offres</a><a class="admin-quick-link" href="<?= e(route('admin/users')) ?>"><span>02</span> Gérer les utilisateurs</a><a class="admin-quick-link" href="<?= e(route('admin/reports')) ?>"><span>03</span> Traiter les signalements</a></div></aside>
+</div>
