@@ -1,1 +1,0 @@
-<main class="container py-5 text-center"><p class="cp-eyebrow">ERREUR 404</p><h1>Cette page est introuvable</h1><p class="text-muted">Le lien demandé n’existe pas dans le prototype CareerPulse.</p><a class="btn btn-primary" href="<?= e(route('home')) ?>">Retour à l’accueil</a></main>
