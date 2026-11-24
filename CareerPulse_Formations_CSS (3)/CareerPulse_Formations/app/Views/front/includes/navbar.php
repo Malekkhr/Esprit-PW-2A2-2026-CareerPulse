@@ -27,7 +27,7 @@ $isAdmin = $isLoggedIn && ($_SESSION['role'] ?? '') === 'admin';
         <div class="cp-nav-actions">
             <?php if ($isLoggedIn): ?>
                 <span class="cp-nav-user"><i class="fa fa-user" aria-hidden="true"></i> <?= e($_SESSION['username'] ?? '') ?></span>
-                <a href="<?= e(route('logout')) ?>" class="cp-btn cp-btn--primary">Déconnexion</a>
+                <form method="post" action="<?= e(route('logout')) ?>"><?= csrf_input() ?><button type="submit" class="cp-btn cp-btn--primary">Déconnexion</button></form>
             <?php else: ?>
                 <a href="<?= e(route('login')) ?>" class="cp-btn cp-btn--primary">Connexion <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
             <?php endif; ?>

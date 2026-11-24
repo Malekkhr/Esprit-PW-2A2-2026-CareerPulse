@@ -18,7 +18,7 @@ final class ProfileController extends DatabaseController
         $userId = (int) $_SESSION['user_id'];
         $user = $this->findUserById($userId);
         if ($user === null) {
-            (new AuthController())->logout();
+            AuthController::forceLogout('Votre compte n’est plus disponible. Reconnectez-vous.');
         }
 
         $errors = [];

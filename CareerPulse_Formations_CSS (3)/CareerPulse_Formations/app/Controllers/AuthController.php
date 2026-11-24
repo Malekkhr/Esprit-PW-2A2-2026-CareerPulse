@@ -237,6 +237,9 @@ final class AuthController extends DatabaseController
         if ($email === '' || $password === '') {
             return ['Veuillez saisir votre e-mail et votre mot de passe.'];
         }
+        if (strlen($email) > 150 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return ['Adresse e-mail invalide.'];
+        }
 
         $user = $this->findUserByEmail($email);
 
@@ -261,9 +264,19 @@ final class AuthController extends DatabaseController
     /** Détruit la session (données serveur + cookie) puis renvoie vers la connexion. */
     public function logout(): void
     {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !verify_csrf()) {
+            flash('error', 'Déconnexion refusée : formulaire invalide ou expiré.');
+            redirect_to(self::isAuthenticated() ? self::landingAction() : 'home');
+        }
+        self::forceLogout();
+    }
+
+    /** Termine une session après une déconnexion explicite ou un compte devenu indisponible. */
+    public static function forceLogout(string $message = 'Vous êtes déconnecté.'): never
+    {
         self::destroySession();
         session_start(); // nouvelle session vide, uniquement pour afficher le message
-        flash('success', 'Vous êtes déconnecté.');
+        flash('success', $message);
         redirect_to('login');
     }
 
@@ -286,7 +299,7 @@ final class AuthController extends DatabaseController
 
         $user = $this->findUserById((int) $_SESSION['user_id']);
         if ($user === null || $user->getStatus() !== 'active') { // compte supprimé/suspendu alors que la session est active
-            $this->logout();
+            self::forceLogout('Votre compte n’est plus disponible. Reconnectez-vous.');
         }
 
         $this->render('front', 'dashboard', 'Mon espace', 'dashboard', [

@@ -21,4 +21,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    document.querySelectorAll('form[data-validate]').forEach((form) => {
+        const password = form.querySelector('[name="password"]');
+        const confirmation = form.querySelector('[name="password_confirm"]');
+        const validateConfirmation = () => {
+            if (!password || !confirmation) return;
+            confirmation.setCustomValidity(
+                confirmation.value !== '' && password.value !== confirmation.value
+                    ? 'Les deux mots de passe ne correspondent pas.'
+                    : ''
+            );
+        };
+        if (password && confirmation) {
+            password.addEventListener('input', validateConfirmation);
+            confirmation.addEventListener('input', validateConfirmation);
+        }
+        form.addEventListener('submit', (event) => {
+            validateConfirmation();
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                form.reportValidity();
+            }
+        });
+    });
 });

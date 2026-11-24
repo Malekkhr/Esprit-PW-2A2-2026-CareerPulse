@@ -28,7 +28,7 @@
             <p class="mt-2 text-xs leading-5 text-gray-500 dark:text-gray-400">Les formations, catégories et comptes sont synchronisés sur la même base MySQL.</p>
             <div class="mt-3 flex flex-col gap-2">
                 <a class="inline-flex text-xs font-semibold text-brand-600 hover:text-brand-800 dark:text-brand-400" href="<?= e(route('home')) ?>">Retour au Front Office →</a>
-                <a class="inline-flex text-xs font-semibold text-gray-500 hover:text-gray-800 dark:text-gray-400" href="<?= e(route('logout')) ?>">Se déconnecter</a>
+                <form method="post" action="<?= e(route('logout')) ?>" class="inline-flex"><?= csrf_input() ?><button type="submit" class="text-xs font-semibold text-gray-500 hover:text-gray-800 dark:text-gray-400">Se déconnecter</button></form>
             </div>
         </div>
     </div>

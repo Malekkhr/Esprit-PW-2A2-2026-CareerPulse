@@ -7,7 +7,7 @@
 <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
     <section class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
         <h2 class="text-theme-xl font-bold text-gray-800 dark:text-white/90"><?= $editingCourse ? 'Modifier la formation' : 'Ajouter une formation' ?></h2>
-        <form method="post" action="<?= e(route('admin/courses')) ?>" class="mt-4 space-y-4">
+        <form method="post" action="<?= e(route('admin/courses')) ?>" class="mt-4 space-y-4" data-validate>
             <?= csrf_input() ?>
             <input type="hidden" name="action" value="<?= $editingCourse ? 'update' : 'create' ?>">
             <?php if ($editingCourse): ?>
@@ -16,7 +16,7 @@
 
             <div>
                 <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500" for="title">Titre de la formation *</label>
-                <input class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="title" name="title" value="<?= e($editingCourse?->getTitle() ?? '') ?>" required>
+                <input class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="title" name="title" maxlength="200" value="<?= e($editingCourse?->getTitle() ?? '') ?>" required>
             </div>
 
             <div>
@@ -32,7 +32,7 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500" for="duration">Durée *</label>
-                    <input class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="duration" name="duration" placeholder="Ex : 4 semaines" value="<?= e($editingCourse?->getDuration() ?? '') ?>" required>
+                    <input class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="duration" name="duration" maxlength="60" placeholder="Ex : 4 semaines" value="<?= e($editingCourse?->getDuration() ?? '') ?>" required>
                 </div>
                 <div>
                     <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500" for="level">Niveau</label>
@@ -64,7 +64,7 @@
 
             <div>
                 <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500" for="skills">Compétences clés</label>
-                <input class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="skills" name="skills" placeholder="Ex : JS · DOM · Events" value="<?= e($editingCourse?->getSkills() ?? '') ?>">
+                <input class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="skills" name="skills" maxlength="255" placeholder="Ex : JS · DOM · Events" value="<?= e($editingCourse?->getSkills() ?? '') ?>">
             </div>
 
             <div>

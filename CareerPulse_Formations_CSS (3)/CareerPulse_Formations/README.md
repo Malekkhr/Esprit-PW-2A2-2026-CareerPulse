@@ -3,7 +3,7 @@
 Sous-projet autonome extrait de **CareerPulse** conservant :
 - La même charte graphique (`#1f3d2b`, `#0f2a1d`, `#d9a531`), le même logo **CareerPulse** et la typographie `Arial, Helvetica, sans-serif`.
 - La gestion complète des **Formations** et des **Catégories** (Front-office filtrable en JavaScript ES6+ / DOM Events et Back-office CRUD complet).
-- La gestion des **Comptes Utilisateurs** (`Inscription`, `Connexion`, `Mon profil`, `Admin > Utilisateurs`) ainsi que l'inscription des utilisateurs aux formations, reliés à la même base de données MySQL **`formation`**.
+- La gestion des **Comptes Utilisateurs** (`Inscription`, `Connexion`, `Mon profil`, `Admin > Utilisateurs`) avec CRUD administrateur, rôles, statuts actif/suspendu et inscription aux formations, reliés à la même base de données MySQL **`formation`**.
 
 ## Installation rapide (XAMPP / WAMP)
 1. Importer `database/formation.sql` dans **phpMyAdmin** (base `formation`).
@@ -17,7 +17,7 @@ Sous-projet autonome extrait de **CareerPulse** conservant :
 | `admin` | `admin@careerpulse.test` | `Admin@1234` | `index.php?action=admin` (**backoffice**) |
 | `user` | `etudiant@careerpulse.test` | `User@1234` | `index.php?action=dashboard` (**frontoffice**) |
 
-> ⚠ Changer ces mots de passe avant toute mise en ligne. Pour promouvoir un compte : `UPDATE users SET role='admin' WHERE email='...'` dans phpMyAdmin.
+> ⚠ Changer ces mots de passe avant toute mise en ligne. L’administrateur peut attribuer les rôles depuis **Back-office > Comptes utilisateurs**. Les inscriptions publiques créent toujours un compte `user`.
 
 ## Conformité au workshop « Sessions et Sécurité PHP »
 Point d'entrée unique `index.php?action=...` (table de routage : `app/routes.php`).
@@ -31,18 +31,19 @@ Point d'entrée unique `index.php?action=...` (table de routage : `app/routes.ph
 | Table `users` (`username`, `email`, `password`, `role ENUM('user','admin')`) | `database/formation.sql` |
 | Inscription : validation serveur (regex username, `filter_var`, ≥ 8 car.), `password_hash()`, rôle forcé à `user` | `AuthController::register()` |
 | Connexion : `password_verify()`, message générique, `session_regenerate_id(true)` | `AuthController::login()` |
-| Déconnexion : vidage `$_SESSION`, cookie supprimé, `session_destroy()` | `AuthController::logout()` |
+| Déconnexion : POST avec jeton CSRF, vidage `$_SESSION`, cookie supprimé, `session_destroy()` | `AuthController::logout()` et formulaires de navigation |
 | Session sécurisée : `use_strict_mode`, `cookie_httponly`, `cookie_samesite=Lax`, expiration 30 min | `index.php` (blocs 1 et 2) |
 | `isAuthenticated()`, `requireAuth()`, `hasRole()`, `requireRole()` (403) | `AuthController` — `requireRole` relit le rôle **en base** à chaque page admin |
 | **Frontoffice** (rôle `user`) : accueil, formations, inscription aux formations, `dashboard`, `profile` | routes `home`, `courses`, `register`, `login`, `dashboard`, `profile` |
 | **Backoffice** (rôle `admin` uniquement) : tableau de bord, formations, catégories, utilisateurs | routes `admin`, `admin/courses`, `admin/categories`, `admin/users` (contrôle dans `Admin/AdminController`) |
+| CRUD utilisateurs : ajouter, consulter, modifier (y compris mot de passe), supprimer, attribuer un rôle et suspendre/réactiver | `Admin/UserController.php` + `Views/admin/pages/users.php` ; un admin ne peut pas supprimer son propre compte ni désactiver le dernier admin actif |
 | Interfaces visuellement distinctes front / back | front : CSS3 Flexbox/Grid ; back : template TailAdmin (barre latérale, étiquette BACKOFFICE) |
 | Injections SQL | requêtes préparées partout (aucune concaténation de saisie) |
 | XSS | `e()` sur toute sortie + validation des entrées + en-tête CSP |
 | CSRF | jeton `csrf_token` par session, champ caché `csrf_input()`, `hash_equals()` |
 | En-têtes HTTP | `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Content-Security-Policy` (`index.php`) |
 
-La validation JavaScript du formulaire d'inscription (`assets/front/js/app.js`) n'est qu'une **aide à la saisie** : les mêmes règles sont revérifiées côté serveur.
+Les formulaires d'inscription, connexion, profil, utilisateurs, formations et catégories ont des contrôles côté navigateur (JavaScript / contraintes HTML) et les règles métier sont revérifiées en PHP côté serveur. La validation navigateur améliore la saisie mais ne remplace jamais la validation serveur.
 
 ### Tests rapides
 - **403 / accès refusé** : connecté en `etudiant`, ouvrir `index.php?action=admin` → page « Accès refusé » ; déconnecté → redirection vers la connexion.

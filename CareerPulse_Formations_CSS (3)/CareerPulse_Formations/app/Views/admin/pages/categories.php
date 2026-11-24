@@ -7,7 +7,7 @@
 <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
     <section class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
         <h2 class="text-theme-xl font-bold text-gray-800 dark:text-white/90"><?= $editingCategory ? 'Modifier la catégorie' : 'Nouvelle catégorie' ?></h2>
-        <form method="post" action="<?= e(route('admin/categories')) ?>" class="mt-4 space-y-4">
+        <form method="post" action="<?= e(route('admin/categories')) ?>" class="mt-4 space-y-4" data-validate>
             <?= csrf_input() ?>
             <input type="hidden" name="action" value="<?= $editingCategory ? 'update' : 'create' ?>">
             <?php if ($editingCategory): ?>
@@ -16,12 +16,12 @@
 
             <div>
                 <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500" for="name">Nom de la catégorie *</label>
-                <input class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="name" name="name" value="<?= e($editingCategory?->getName() ?? '') ?>" required>
+                <input class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="name" name="name" maxlength="100" value="<?= e($editingCategory?->getName() ?? '') ?>" required>
             </div>
 
             <div>
                 <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500" for="description">Description</label>
-                <textarea class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="description" name="description" rows="3"><?= e($editingCategory?->getDescription() ?? '') ?></textarea>
+                <textarea class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-theme-sm dark:border-gray-700 dark:bg-gray-900 dark:text-white" id="description" name="description" maxlength="255" rows="3"><?= e($editingCategory?->getDescription() ?? '') ?></textarea>
             </div>
 
             <div class="flex gap-2">
