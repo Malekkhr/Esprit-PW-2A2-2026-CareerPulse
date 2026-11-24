@@ -39,6 +39,15 @@ Backoffice, réservé au rôle `admin` (contrôle refait en base à chaque requ�
 
 **Côté utilisateur (frontoffice)** : `profile` permet aussi de changer son mot de passe (mot de passe actuel exigé, `session_regenerate_id` ensuite). La déconnexion se fait en **POST + CSRF** (formulaire), plus par simple lien.
 
+### Profil utilisateur (mise à jour du compte)
+
+- Route `profile` : réservée à un utilisateur connecté (`AuthController::requireAuth()`).
+- `app/Controllers/ProfileController.php` charge le compte connecté depuis la session, valide les champs côté PHP et met à jour uniquement ce compte avec une requête PDO préparée.
+- `app/Views/front/pages/profile.php` affiche les champs personnels, les formations suivies et le formulaire facultatif de changement de mot de passe.
+- `app/Views/assets/front/js/app.js` valide les règles déclarées par le formulaire (`data-cp-validate`) côté navigateur : nom, e-mail, longueurs, mot de passe et confirmation. La validation PHP demeure obligatoire.
+- Pour changer le mot de passe, il faut fournir le mot de passe actuel; le nouveau est haché avec `password_hash()`, puis l’identifiant de session est renouvelé.
+- Le formulaire de profil inclut un jeton CSRF. Les valeurs sont échappées à l’affichage avec `e()`.
+
 ### Tests rapides (gestion des utilisateurs)
 - **Autorisation** : connecté en `etudiant`, ouvrir `index.php?action=admin/users` (ou `/create`, `/edit`) → page 403 ; déconnecté → redirection vers la connexion.
 - **Create** : ajouter un utilisateur avec un e-mail déjà pris → message « déjà utilisé » ; mot de passe `abc` → erreurs de validation.

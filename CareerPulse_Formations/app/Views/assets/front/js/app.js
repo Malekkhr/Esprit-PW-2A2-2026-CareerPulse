@@ -1,4 +1,64 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Validation côté navigateur des formulaires qui portent data-cp-validate.
+    // Le contrôleur PHP répète les mêmes contrôles : le JavaScript ne remplace
+    // jamais la validation serveur, car il peut être désactivé ou contourné.
+    document.querySelectorAll('form[data-cp-validate]').forEach((form) => {
+        const fields = Array.from(form.querySelectorAll('input, textarea, select'))
+            .filter((field) => field.name && field.type !== 'hidden' && field.type !== 'submit');
+
+        const validateField = (field) => {
+            const rules = (field.dataset.v || '').split(/\s+/).filter(Boolean);
+            const value = field.value.trim();
+            const conditionalSelectors = (field.dataset.requiredIf || '')
+                .split(',').map((selector) => selector.trim()).filter(Boolean);
+            const conditionIsActive = conditionalSelectors.some((selector) => {
+                const other = form.querySelector(selector);
+                return other && other.value !== '';
+            });
+            const isRequired = field.required || rules.includes('required') || conditionIsActive;
+            let message = '';
+
+            if (isRequired && value === '') {
+                message = `${field.dataset.label || 'Ce champ'} est obligatoire.`;
+            } else if (value !== '' && rules.includes('username') && !/^[a-zA-Z0-9_-]{3,50}$/.test(value)) {
+                message = 'Le nom doit contenir 3 à 50 caractères (lettres, chiffres, _ ou -).';
+            } else if (value !== '' && (rules.includes('email') || field.type === 'email')
+                && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+                message = 'Saisissez une adresse e-mail valide.';
+            } else if (value !== '' && rules.includes('max') && value.length > Number(field.dataset.max || field.maxLength)) {
+                message = `${field.dataset.label || 'Ce champ'} est trop long (maximum ${field.dataset.max || field.maxLength} caractères).`;
+            } else if (value !== '' && rules.includes('password')
+                && (value.length < 8 || value.length > 72 || !/[A-Za-z]/.test(value) || !/\d/.test(value))) {
+                message = 'Le mot de passe doit contenir 8 à 72 caractères, une lettre et un chiffre.';
+            } else if (value !== '' && rules.includes('match')) {
+                const other = form.querySelector(field.dataset.match || '');
+                if (other && value !== other.value) message = 'Les deux mots de passe ne correspondent pas.';
+            }
+
+            field.setCustomValidity(message);
+            field.setAttribute('aria-invalid', String(message !== ''));
+            return message === '';
+        };
+
+        fields.forEach((field) => {
+            field.addEventListener('input', () => {
+                validateField(field);
+                // Réévalue les champs dépendants (ex. les trois champs mot de passe).
+                fields.filter((candidate) => candidate.dataset.requiredIf || candidate.dataset.match)
+                    .forEach(validateField);
+            });
+            field.addEventListener('blur', () => validateField(field));
+        });
+
+        form.addEventListener('submit', (event) => {
+            const valid = fields.map(validateField).every(Boolean);
+            if (!valid) {
+                event.preventDefault();
+                form.reportValidity();
+            }
+        });
+    });
+
     const spinner = document.getElementById('cp-spinner');
     if (spinner) {
         window.setTimeout(() => spinner.classList.add('is-hidden'), 220);
